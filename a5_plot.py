@@ -34,6 +34,8 @@ for key in prcentile_xindex:
 plt.clf()
 gridsize=20
 plt.hexbin(xlist, ylist,gridsize=gridsize, cmap=cm.jet, bins=None)
+cb = plt.colorbar()
+cb.set_label('frequency')
 
 xlabel('percentile by variation in first five plays')
 ylabel('percentile by average in second five plays')
