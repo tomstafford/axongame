@@ -6,10 +6,12 @@ import matplotlib as plt
 from pylab import *
 
 #first find actual data -------------------------
-#execfile("a4_1timespread.py")
+print "OBSERVED DATA (fig4_observed.py)"
+execfile("fig4_observed.py")
 
 #second generate bootstrap data -----------------
-#execfile("a4_2boot.py") #takes approx. 24 hours
+print "BOOTSTRAP CONFIDENCE LIMITS"
+execfile("fig4_boot.py") #this can take a long time (e.g. 24 hours) if you use many (e.g. 2000) resamples
 
 #load 
 #observed data
@@ -17,11 +19,8 @@ plot_timespread = pickle.load(open('save_plot_timespread.p', 'rb'))
 #bootstrap data
 bootdata = pickle.load(open('save_a4_2boot_bootdata.p','rb'))
 
-#find CIs
+#find CIs, using ssm
 
-#bootdata=np.random.rand( 100,20 )
-
-#use ssm
 ci_upper=np.zeros( (1,100))
 ci_lower=np.zeros( (1,100))
 m_boot=np.zeros( (1,100))
@@ -31,6 +30,7 @@ for i in range(100):
     ci_lower[0,i]=ssm.scoreatpercentile(bootdata[i,:],02.5)
     m_boot[0,i]=np.mean(bootdata[i,:])
 
+print "PLOTTING"
 
 # plot -------------------------------------------
 # thank you tomas http://www.staff.ncl.ac.uk/tom.holderness/software/pythonlinearfit
@@ -52,16 +52,16 @@ leg = gca().get_legend()
 ltext = leg.get_texts()
 setp(ltext, fontsize=10)
 
-#plot_timespread = pickle.load(open('save_plot_timespread.p', 'rb'))
-
 xlabel('maximum score percentile') 
 ylabel('average gap between 1st and 10th plays/hours')
 
-savefig('prcentile_vs_timespread.png', dpi=None, facecolor='w', edgecolor='w',
+savefig('figure4.png', dpi=None, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=False, bbox_inches=None, pad_inches=0.1)
 
-savefig('../cogsci13/figures/prcentile_vs_timespread.png', dpi=300, facecolor='w', edgecolor='w',
+generatepaperfigs=0
+if generatepaperfigs:
+    savefig('../cogsci13/figures/prcentile_vs_timespread.png', dpi=300, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=False, bbox_inches=None, pad_inches=0.1)       
         

@@ -17,13 +17,13 @@ def timedelta_to_hours(td):
     return x/60/60
 
 
-
+print "loading data"
 # ------------------------------------------------
 # import data from json
 fh=open('data_by_cookie.json')
 data=json.load(fh)
 
-
+print "organising data"
 # --------------------------------------------
 # look at subsample of people who played more than x times   
 big = {k: data[k] for k in data if len(data[k]) > 9} #pythonic

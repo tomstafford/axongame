@@ -22,22 +22,25 @@ def sample_wr(population, k):
 
 # ------------------------------------------------
 # import data from json
+print "loading data"
 fh=open('data_by_cookie.json')
 data=json.load(fh)
 
 
 # --------------------------------------------
 # look at subsample of people who played more than x times   
+print "organising data"
 big = {k: data[k] for k in data if len(data[k]) > 9} #pythonic
 
 
 #---------------------------------------------
 # build records for bootstrap
+print "organising bootstrap data"
 attempts = ['%.5d'%(i+1) for i in range(10)]
 bootdata={a:[] for a in attempts}
 
 #collate
-loading=1
+loading=0
 if not loading:
     for key in big:
         for attempt in attempts:
@@ -55,8 +58,9 @@ else:
 boot_n=1000
 bootrec=np.zeros( (1,boot_n) )
 
+print "Starting bootstrap calculations"
 for booti in range(boot_n):
-
+    print "iteration " +str(booti) + " of " + str(boot_n)
     av1={}
     var1={}
     av2={}

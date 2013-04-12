@@ -1,9 +1,12 @@
+#make Figure 3
+
 import json
 import bisect
 import pylab as pb
 import scipy.stats as stats
 import numpy as np
 import pickle
+import matplotlib.pyplot as plt  # Matplotlib's pyplot: MATLAB-like syntax
 
 print "loading data"
 data = json.load(open('data_by_cookie.json'))
@@ -31,7 +34,7 @@ def mean_score_per_attempt(num_attempts, num_attempt_limit, maxscores, first_20_
     count_at_attempt_i_for_percentile_j = pb.zeros((20,5))
     std_at_attempt_i_for_percentile_j = pb.zeros((20,5))
     for j in range(5):
-        print "looking at percentile %s"%j
+        print "looking at percentile group %s"%j
         # this second mask chooses only those players whose max score is in the jth percentile
         scores_in_this_percentile = pb.array(player_percentiles) == j
         # we AND these together to get the mask
@@ -49,16 +52,17 @@ def mean_score_per_attempt(num_attempts, num_attempt_limit, maxscores, first_20_
     pickle.dump(std_at_attempt_i_for_percentile_j, open('save_std_at_attempt_i_for_percentile_j.p', 'wb'))  
     return mean_score_at_attempt_i_for_percentile_j
 
-pb.plot(mean_score_per_attempt(num_attempts, 19, maxscores, first_20_scores), 'b')
-pb.plot(mean_score_per_attempt(num_attempts, 3, maxscores, first_20_scores), 'r')
-pb.plot(mean_score_per_attempt(num_attempts, 8, maxscores, first_20_scores), 'g')
-pb.plot(mean_score_per_attempt(num_attempts, 15, maxscores, first_20_scores), 'k')
-pb.xlabel('Attempt number')
-pb.ylabel('Average score')
-#pb.show()
-pb.savefig('mike_debug.png')
+## we still don't know why these don't look like they should
+#pb.plot(mean_score_per_attempt(num_attempts, 19, maxscores, first_20_scores), 'b')
+#pb.plot(mean_score_per_attempt(num_attempts, 3, maxscores, first_20_scores), 'r')
+#pb.plot(mean_score_per_attempt(num_attempts, 8, maxscores, first_20_scores), 'g')
+#pb.plot(mean_score_per_attempt(num_attempts, 15, maxscores, first_20_scores), 'k')
+#pb.xlabel('Attempt number')
+#pb.ylabel('Average score')
+##pb.show()
+#pb.savefig('mike_debug.png')
 
-makefig=0
+makefig=1
 if makefig:
     s=mean_score_per_attempt(num_attempts, 19, maxscores, first_20_scores)
     count_at_attempt_i_for_percentile_j=pickle.load(open('save_count_at_attempt_i_for_percentile_j.p', 'rb'))    
@@ -71,11 +75,17 @@ if makefig:
         pb.errorbar(range(1,21),s[:,i],yerr=stderr[:,i],marker=markervals[i],color='k',label=labelname)
         #errorbar(range(1,21), s[:,i],yerr=scores_var[:,i],marker=markervals[i],color='k',label=labelname)
            
-    legend(loc=4)
-    xlabel('Attempt number')
-    ylabel('Average score')
-    xlim([0.5, 20.5])
-    ylim([-7000,49000])
-    savefig('../cogsci13/figures/pentiles_attempts_vs_scores.png', dpi=300, facecolor='w', edgecolor='w',
+    plt.legend(loc=4)
+    plt.xlabel('Attempt number')
+    plt.ylabel('Average score')
+    plt.xlim([0.5, 20.5])
+    plt.ylim([-7000,49000])
+    plt.savefig('figure3.png', dpi=300, facecolor='w', edgecolor='w',
+            orientation='portrait', papertype=None, format=None,
+            transparent=False, bbox_inches=None, pad_inches=0.1)
+    
+    generatepaperfigs=0
+    if generatepaperfigs:    
+        plt.savefig('../cogsci13/figures/pentiles_attempts_vs_scores.png', dpi=300, facecolor='w', edgecolor='w',
             orientation='portrait', papertype=None, format=None,
             transparent=False, bbox_inches=None, pad_inches=0.1)

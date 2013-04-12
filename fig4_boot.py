@@ -21,8 +21,9 @@ def sample_wr(population, k):
 
 
 #first find actual data -------------------------
-#execfile("a4_1timespread.py")
+#execfile("fig4_observed.py")
 
+print "Loading"
 #load scores for bootstrap
 big = pickle.load(open('save_a4_1_big.p', 'rb'))
 a = pickle.load(open('save_a4_1_a.p', 'rb'))
@@ -31,12 +32,14 @@ timespread = pickle.load(open('save_a4_1_timespread.p', 'rb'))
 #-------------------------------------------
 #build loop out of everything after this
 
-boot_n=2000
+
+boot_n=2000 #define how many resamples the bootstrap uses 
 bootdata=np.zeros( (100,boot_n) )
 
+print "Starting bootstrap calculations"
 for n in range(boot_n):
     
-    print n
+    print "iteration " +str(n) + " of " + str(boot_n)
     #find maxscores, when actual scores are a sample [attempts] long of a
     #maxscore_boot={key: max(random.sample(a,len(big[key]))) for key in big}
     maxscore_boot={key: max(sample_wr(a,len(big[key]))) for key in big}
@@ -66,7 +69,7 @@ for n in range(boot_n):
     #pickle.dump(timespread_b, open('save_timespread_b.p', 'wb'))
     
 
-
+print "Saving bootstrap data"
 pickle.dump(bootdata, open('save_a4_2boot_bootdata.p', 'wb'))
 
 

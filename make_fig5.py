@@ -1,8 +1,9 @@
 import json
 from datetime import datetime, time, timedelta
-import scipy
-from numpy import mean, sqrt
-import pylab as p
+from scipy import stats
+from numpy import mean, std, sqrt
+#import pylab as p
+import matplotlib.pyplot as plt  # Matplotlib's pyplot: MATLAB-like syntax
 
 # ------------------------------------------------
 # import data from json
@@ -60,7 +61,7 @@ for key in big:
             wakers[key]=big[key] 
         else:
             sleepers[key]=big[key]
-#    if spread[key]>timedelta(hours=8):
+#    if spread[key]>plt.timedelta(hours=8):
 #       if first.hour>20:
 #           sleepers[key]=big[key]
 
@@ -93,7 +94,7 @@ diff=[]
 mean_rester=[]
 mean_goer=[]             
 
-for h in range(24,25):
+for h in range(24,25): #change this to get different cut off between resters and goers
     goers=[]
     resters=[]
     
@@ -106,36 +107,42 @@ for h in range(24,25):
         except KeyError:
             continue
     print 'H = %2.0f' % h
-    print 't-statistic = %6.3f pvalue = %6.4f' % scipy.stats.ttest_ind(resters, goers)
+    print 't-statistic = %6.3f pvalue = %6.4f' % stats.ttest_ind(resters, goers)
     print "degrees of freedom = %i" % (len(resters)+len(goers)-2)    
-    t,prob=scipy.stats.ttest_ind(resters, goers)
+    t,prob=stats.ttest_ind(resters, goers)
     
-    p.append(prob)
-    diff.append(mean(resters)-mean(goers))
-    print "Mean resters = %i, mean goers = %i" (int(mean(resters)), int(mean(goers)))
-    print "Std Err resters = %0.2f, std err goers = %0.2f" % (std(resters)/sqrt(len(resters)),std(goers)/sqrt(len(goers)))
+    poolstd=sqrt(0.5*(std(resters)**2 + std(goers)**2)) #pooled standard deviation
+    effect_size=(mean(resters)-mean(goers))/poolstd #difference in means / std
+    print "Cohen's d effect size = %2.2f" %effect_size
+    
+#    p.append(prob)
+#    diff.append(mean(resters)-mean(goers))
+#    print "Mean resters = %i, mean goers = %i" (int(mean(resters)), int(mean(goers)))
+    #print "Std Err resters = %0.2f, std err goers = %0.2f" % (std(resters)/sqrt(len(resters)),std(goers)/sqrt(len(goers)))
     
 
 
-fig = p.figure()
+fig = plt.figure()
 ax = fig.add_subplot(1,1,1)
-ax.errorbar([1,2],[mean(resters), mean(goers)], yerr=[std(resters)/sqrt(len(resters)),std(goers)/sqrt(len(goers))], marker='o')
+ax.errorbar([1,2],[mean(goers), mean(resters)], yerr=[std(goers)/sqrt(len(goers)),std(resters)/sqrt(len(resters))], marker='o')
 ax.set_xticks([1,2])
-xlim(0.7,2.3)
-ylim(40000,50000)
-group_labels = ['\'resters\'', '\'goers\'']
+plt.xlim(0.7,2.3)
+plt.ylim(40000,50000)
+group_labels = ['\'goers\'','\'resters\'']
 ax.set_xticklabels(group_labels)
 
-ylabel('average maximum score')
-#xlabel('players grouped according to delay between first and tenth play)
+plt.ylabel('average maximum score')
+plt.xlabel('players grouped according to delay between first and tenth play')
 #size of benefit with extent of rest??
 
 
-savefig('resters_vs_goers.png', dpi=None, facecolor='w', edgecolor='w',
+plt.savefig('figure5.png', dpi=None, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=False, bbox_inches=None, pad_inches=0.1)
 
-savefig('../cogsci13/figures/resters_vs_goers.png', dpi=300, facecolor='w', edgecolor='w',
+generatepaperfigs=0
+if generatepaperfigs:
+    plt.savefig('../cogsci13/figures/resters_vs_goers.png', dpi=300, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=False, bbox_inches='tight', pad_inches=0.1) 
 
@@ -147,54 +154,14 @@ pickle.dump(diff, open('save_4b_diff.p', 'wb'))
 #p= pickle.load(open('save_4b_p.p',     t=spreads_b/counts_b # find average'rb'))
 #diff= pickle.load(open('save_4b_diff.p', 'rb'))
 
-figure(1)
-plot(diff)
-xlabel('divider between resters and goers')
-ylabel('benefit of resting')
-               
-savefig('spacing_benefit_of_resting.png', dpi=None, facecolor='w', edgecolor='w',
-        orientation='portrait', papertype=None, format=None,
-        transparent=False, bbox_inches=None, pad_inches=0.1)
+
+## run this if looking at a range of cut off points
+#plt.figure(1)
+#plt.plot(diff)
+#plt.xlabel('divider between resters and goers')
+#plt.ylabel('benefit of resting')
+#               
+#plt.savefig('spacing_benefit_of_resting.png', dpi=None, facecolor='w', edgecolor='w',
+#        orientation='portrait', papertype=None, format=None,
+#        transparent=False, bbox_inches=None, pad_inches=0.1)
         
-sleepers_max=[]       
-wakers_max=[]
-
-for key in sleepers:
-    try:
-        sleepers_max.append(endmax[key])
-    except KeyError:
-        continue
-
-
-
- 
-for key in wakers:
-    try:
-        wakers_max.append(endmax[key])
-    except KeyError:
-        continue
-
-mean(wakers_max)
-mean(sleepers_max)
-
-print 't-statistic = %6.3f pvalue = %6.4f' % scipy.stats.ttest_ind(wakers_max, sleepers_max)  
-
-def timedelta_to_hours(td):
-    x=td.seconds + td.days*24*60*60
-    return x/60/60
-
-
-
-rec={}# collections.defaultdict(dict)
-
-for key in spread:
-    try:
-        rec[key]=[timedelta_to_hours(spread[key]),endmax[key]]
-    except KeyError:
-        continue
-
-
-
-trec, srec = zip(*rec.items())
-
-

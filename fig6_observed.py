@@ -16,12 +16,14 @@ from scipy.stats.stats import pearsonr
 
 # ------------------------------------------------
 # import data from json
+print "loading data"
 fh=open('data_by_cookie.json')
 data=json.load(fh)
 
 
 # --------------------------------------------
 # look at subsample of people who played more than x times   
+print "organising data"
 big = {k: data[k] for k in data if len(data[k]) > 9} #pythonic
 
 
@@ -34,7 +36,7 @@ for key in big:
 
 # sort maximum scores, smallest to biggest
 ranked_maxscore=sorted(maxscore[key] for key in maxscore)
-        
+
 #calc percentile ranking for each player (=each key)
 prcentiles=[]
 for p in range(100):
@@ -62,7 +64,7 @@ second_plays = ['%.5d'%(i+6) for i in range(5)]
 
 #construct vaiables dicts
 
-
+print "calculating summary stats"
 #for each player make two lists, of plays 1-5 (first) and 6-10 (second)
 #and calculate summary stats av1,var1 and av2, var2
 for key in big:
@@ -105,39 +107,16 @@ for p in range(100):
 prcentile_xindex={key: bisect.bisect(prcentiles_x,var2[key]) for key in big}
 prcentile_yindex={key: bisect.bisect(prcentiles_y,av1[key]) for key in big}
        
-#plot subset       
-i=1001
-for key in big:
-    i+=1
-    plot(prcentile_xindex[key],prcentile_yindex[key],'b.')
-    if i==2000:
-       break
+print "saving data"        
 
-#pearson r correlation
+#convert to list
 xlist=[]
 ylist=[]
 for key in prcentile_xindex:
     xlist.append(prcentile_xindex[key])
     ylist.append(prcentile_yindex[key])
 
-
-
-xlabel('variation in first five plays')
-ylabel('average in second five plays')
-title("r = %.2f, p = %.2f" % pearsonr(xlist,ylist))
-
-savefig('a5_var1av2.png', dpi=None, facecolor='w', edgecolor='w',
-        orientation='portrait', papertype=None, format=None,
-        transparent=False, bbox_inches=None, pad_inches=0.1) 
-        
-        
 pickle.dump(xlist, open('save_a5_xlist.p', 'wb'))
 pickle.dump(ylist, open('save_a5_ylist.p', 'wb'))
-
-#recreate nontriviality result - using bootstrap, as with a4 (?) 
-#replicate with number of wipe outs
-
-#not this
-newylist=ylist
-random.shuffle(newylist)
-print("r = %.2f, p = %.2f" % pearsonr(xlist,newylist))
+       
+       

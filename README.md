@@ -8,3 +8,20 @@ We analyse data from a very large (n = 854064) sample of players of an online ga
 http://www.tomstafford.staff.shef.ac.uk/
 
 http://mikedewar.org/
+
+FILE FUNCTIONS
+
+make_fig2.py - attempt no vs av score analysis (figure 2) and attempt vs n (not published)
+make_fig3.py - score vs attempt number for percentile groups based on maximum score (figure 3)
+
+analysis_no2.py - score percentile vs attempts analysis (not published)
+
+make_fig4.py - players by maximum score vs delay between 1st and 10th play (fig 4)
+- fig4_observed.py (required for make_fig4.py)
+- fig4_boot.py  (required for make_fig4.py)
+
+make_fig5.py - goers vs resters (including t-test and effect size calc)
+
+make_fig6.pu - exploration vs exploitation result
+- fig6_observed.py
+- fig6_boot.py

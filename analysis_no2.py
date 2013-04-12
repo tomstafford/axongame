@@ -1,17 +1,23 @@
-# ------------------------------------------------
-# import data from json
-import json
-fh=open('data_by_cookie.json')
-data=json.load(fh)
-
 #-------------------------------------------------
 #SECOND - rank people according to their highest ever score
 #           and look at the number of attempts they make
 #-------------------------------------------------
 
+
+
+import pickle
+import json
+
+# ------------------------------------------------
+# import data from json
+print "loading data"
+fh=open('data_by_cookie.json')
+data=json.load(fh)
+
+
 # --------------------------------------------
 # look at subsample of people who played more than ten times
-
+print "taking subset"
 big={}
 
 for key in data:
@@ -28,7 +34,8 @@ for key in data:
 # [2] is the hour
 
 loading = 0
-import pickle
+
+print "finding maxscores"
 
 if not loading:
     maxscore={}
@@ -55,6 +62,8 @@ import scipy.stats.mstats as ssm
 #----------------------------------------------
 #now get percentiles for 0 - 99
 
+print "finding percentiles for scores"
+
 if not loading:
     prcentiles=[]
     for p in range(100):
@@ -66,6 +75,8 @@ else:
 
 
 #graph this
+print "graphing percentiles against max score values"
+
 import matplotlib.pyplot as plt
 from pylab import *
 plt.clf()
@@ -81,6 +92,7 @@ savefig('percentile_vs_score.png', dpi=None, facecolor='w', edgecolor='w',
 # now collect number of attempts for people 
 # according to their maxscore percentile
 #
+print "finding percentiles for number of attempts"
 
 if not loading:
     #this is the dictionary where we'll collect the scores
@@ -121,6 +133,9 @@ attempt_numbers,indiv_count=zip(*centile_length.items())
 
 # convert the attempt numbers to integers
 pcentile = [int(a) for a in pcentile]
+
+
+print "graphing score percentiles against number of attempts average"
 
 # now a graph
 plt.clf()
