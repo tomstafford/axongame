@@ -140,7 +140,7 @@ plt.savefig('figure5.png', dpi=None, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=False, bbox_inches=None, pad_inches=0.1)
 
-generatepaperfigs=0
+generatepaperfigs=1
 if generatepaperfigs:
     plt.savefig('../cogsci13/figures/resters_vs_goers.png', dpi=300, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
