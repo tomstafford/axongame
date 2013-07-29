@@ -48,6 +48,10 @@ av2={}
 var2={}
 
 score1={}
+score2={}
+score3={}
+score4={}
+score5={}
 score10={}
 
 first_plays = ['%.5d'%(i+1) for i in range(5)]
@@ -64,6 +68,26 @@ for key in big:
         score1[key]=big[key][attempt][0]
     except KeyError:
         score1[key]=NaN    
+    attempt=first_plays[1]
+    try:
+        score2[key]=big[key][attempt][0]
+    except KeyError:
+        score2[key]=NaN       
+    attempt=first_plays[2]
+    try:
+        score3[key]=big[key][attempt][0]
+    except KeyError:
+        score3[key]=NaN    
+    attempt=first_plays[3]
+    try:
+        score4[key]=big[key][attempt][0]
+    except KeyError:
+        score4[key]=NaN       
+    attempt=first_plays[4]
+    try:
+        score5[key]=big[key][attempt][0]
+    except KeyError:
+        score5[key]=NaN       
     attempt=second_plays[4]
     try:
         score10[key]=big[key][attempt][0]
@@ -94,6 +118,10 @@ vars1=[]
 avs2=[]
 vars2=[]
 scores1=[]
+scores2=[]
+scores3=[]
+scores4=[]
+scores5=[]
 scores10=[]
 
 for key in big:
@@ -102,6 +130,10 @@ for key in big:
     avs2.append(av2[key])
     vars2.append(var2[key])
     scores1.append(score1[key])
+    scores2.append(score2[key])
+    scores3.append(score3[key])
+    scores4.append(score4[key])
+    scores5.append(score5[key])
     scores10.append(score10[key])
     
     
@@ -111,6 +143,10 @@ arravs2=np.array(avs2)
 arrvars1=np.array(vars1)
 arrvars2=np.array(vars2)
 arrscores1=np.array(scores1)
+arrscores2=np.array(scores2)
+arrscores3=np.array(scores3)
+arrscores4=np.array(scores4)
+arrscores5=np.array(scores5)
 arrscores10=np.array(scores10)
 
 #mask according to nans in eitherof the paired variable arrays
@@ -128,50 +164,33 @@ arrscores10=np.array(scores10)
 #print "var 1-5 predicts score 10"
 #pearsonr((arrvars1[~isnan(arrvars1)&~isnan(arrscores10)]),(arrscores10[~isnan(arrvars1)&~isnan(arrscores10)]))
 
+####### testing
+
+
 #define mask to remove NaNs
+#mask=~isnan(arravs2)&~isnan(arrscores1)&~isnan(arrscores2)&~isnan(arrscores3)&~isnan(arrscores4)&~isnan(arrscores5)&~isnan(arrvars1)
+#mask=~isnan(arrscores10)&~isnan(arrscores1)&~isnan(arrscores2)&~isnan(arrscores3)&~isnan(arrscores4)&~isnan(arrscores5)&~isnan(arrvars1)
 mask=~isnan(arrscores10)&~isnan(arravs1)&~isnan(arrvars1)
 
-y=arrscores10[mask]
-x=column_stack((arravs1[mask],arrvars1[mask]))
-mymodel = ols.ols(y,x,'score10',['av1to5','var1to5'])
+#convert variables for regression to z scores, so coefficients are beta weights
 
+#predict average on scores 6-10....
+#y=arravs2[mask] #better predictions for av6-10 than score 10
+y=arrscores10[mask]
+yz=(y-mean(y))/std(y)
+
+#...using score 1
+x1z=(arrscores2[mask]-mean(arrscores2[mask]))/std(arrscores2[mask])
+
+#...using av1-5
+x1z=(arravs1[mask]-mean(arravs1[mask]))/std(arravs1[mask])
+
+#...and variance of scores 1-5
+x2z=(arrvars1[mask]-mean(arrvars1[mask]))/std(arrvars1[mask])
+xz=column_stack((x1z,x2z))
+
+mymodel = ols.ols(yz,xz,'scores10',['avs1-5','var1to5'])
 mymodel.summary()
 
-#beta weight for x1
-numerator=pearsonr(y,x[:,0])[0]-pearsonr(y,x[:,1])[0]*pearsonr(x[:,0],x[:,1])[0]
-denominator=1-pearsonr(x[:,0],x[:,1])[0]**2
 
-beta1=numerator/denominator
- 
-#beta weight for x2 
-numerator=pearsonr(y,x[:,1])[0]-pearsonr(y,x[:,0])[0]*pearsonr(x[:,0],x[:,1])[0]
-denominator=1-pearsonr(x[:,0],x[:,1])[0]**2
 
-beta2=numerator/denominator
-
-print "Model with av1-5 and var1-5"
-print "Beta 1 = %.2f, Beta 2 = %.2f" %(beta1, beta2)
-
-#define mask to remove NaNs
-mask=~isnan(arrscores10)&~isnan(arrscores1)&~isnan(arrvars1)
-
-y=arrscores10[mask]
-x=column_stack((arrscores1[mask],arrvars1[mask]))
-mymodel = ols.ols(y,x,'score10',['score1','var1to5'])
-
-mymodel.summary()
-
-#beta weight for x1
-numerator=pearsonr(y,x[:,0])[0]-pearsonr(y,x[:,1])[0]*pearsonr(x[:,0],x[:,1])[0]
-denominator=1-pearsonr(x[:,0],x[:,1])[0]**2
-
-beta1=numerator/denominator
- 
-#beta weight for x2 
-numerator=pearsonr(y,x[:,1])[0]-pearsonr(y,x[:,0])[0]*pearsonr(x[:,0],x[:,1])[0]
-denominator=1-pearsonr(x[:,0],x[:,1])[0]**2
-
-beta2=numerator/denominator
-
-print "Model with score1 and var1-5"
-print "Beta 1 = %.2f, Beta 2 = %.2f" %(beta1, beta2)
