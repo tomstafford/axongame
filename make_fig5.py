@@ -131,7 +131,7 @@ plt.ylim(40000,50000)
 group_labels = ['\'goers\'','\'resters\'']
 ax.set_xticklabels(group_labels)
 
-plt.ylabel('average maximum score')
+plt.ylabel('average maximum score on plays 11-15')
 plt.xlabel('players grouped according to delay between first and tenth play')
 #size of benefit with extent of rest??
 

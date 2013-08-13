@@ -53,7 +53,7 @@ ltext = leg.get_texts()
 setp(ltext, fontsize=10)
 
 xlabel('maximum score percentile') 
-ylabel('average gap between 1st and 10th plays/hours')
+ylabel('average gap between first and last plays/hours')
 
 savefig('figure4.png', dpi=None, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,

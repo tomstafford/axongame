@@ -1,0 +1,8 @@
+maxscores_notarray=[]
+for score in scores:
+	if len(score)>19:
+		maxscores_notarray.append(score[19])
+	else:
+		maxscores_notarray.append(NaN)
+
+
