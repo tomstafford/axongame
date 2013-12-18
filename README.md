@@ -1,27 +1,47 @@
 This code accompanies our paper 
 
-Stafford, T. & Dewar, M. "Testing theories of skill learning using a very large sample of online game players" which will be presented at the Cognitive Science Society conference in Berlin in August 2013
+Stafford, T. & Dewar, M. "Tracing the Trajectory of Skill Learning With a Very Large Sample of Online Game Players" which is in press at Psychological Science (expected January 2014). Previously this work was presented at the Cognitive Science Society conference in Berlin in August 2013 under the title "Testing theories of skill learning using a very large sample of online game players"
 
 Abstract:
-We analyse data from a very large (n = 854064) sample of players of an online game involving rapid perception, decision-making and motor responding. This data set allows us to con-nect full details of training history with measures of perfor-mance, for a groups of participants who are engaged for a sustained amount of time in effortful practice. We show that lawful relations exist between practice amount and subsequent performance, and between practice spacing and subsequent performance. This confirms results long established in the lit-erature on skill acquisition. Additionally, we show that higher initial variation in performance is linked to subsequent higher performance, a result we link to the exploration-exploitation trade-off from the computational framework of reinforcement learning. We discuss the benefits and opportunities of be-havioural datasets with very large sample sizes and suggest that this approach could be particularly fecund for studies of skill acquisition.
+In the present study, we analyzed data from a very large sample (N= 854,064) of players of an online game involving rapid perception, decision making, and motor responding. Use of game data allowed us to connect, for the first time, rich details of training history with measures of performance from participants engaged for a sustained amount of time in effortful practice. We showed that lawful relations exist between practice amount and subsequent performance, and between practice spacing and subsequent performance. Our methodology allowed an in situ confirmation of results long established in the experimental literature on skill acquisition. Additionally, we showed that greater initial variation in performance is linked to higher subsequent performance, a result we link to the exploration/exploitation trade-off from the computational framework of reinforcement learning. We discuss the benefits and opportunities of behavioral data sets with very large sample sizes and suggest that this approach could be particularly fecund for studies of skill acquisition.
 
 http://www.tomstafford.staff.shef.ac.uk/
 
 http://mikedewar.org/
 
-FILE FUNCTIONS
+FILES IN THIS REPOSITORY https://github.com/tomstafford/axongame 
 
-make_fig2.py - attempt no vs av score analysis (figure 2) and attempt vs n (not published)
-make_fig3.py - score vs attempt number for percentile groups based on maximum score (figure 3)
+* NOT ANALYSIS FILES
 
-analysis_no2.py - score percentile vs attempts analysis (not published)
+stafford_and_dewar_revision.pdf - the final submitted version of the paper
+Psychscience__Response_to_Review.pdf - the accompnanying response to the reviewers. 
 
-make_fig4.py - players by maximum score vs delay between 1st and 10th play (fig 4)
-- fig4_observed.py (required for make_fig4.py)
-- fig4_boot.py  (required for make_fig4.py)
+data_by_cookie.json - the raw data upon which all the results are based
 
-make_fig5.py - goers vs resters (including t-test and effect size calc)
+(the following are all analysis files, written in Python, for generating the results reported in the paper and reported in the response to reviewers)
 
-make_fig6.pu - exploration vs exploitation result
-- fig6_observed.py
-- fig6_boot.py
+* ANALYSIS FILES
+
+
+ps_fig2.py - Make Figure 2 from the Psych Science paper. Control analyses follow.
+- ps_fig2_equate.py - equates players on first one/two scores. Also allows you to calculate maximum score on Nth play rather than on any (unspecified) play
+- ps_fig2_rebaseline.py - normalises plots to an initial score of zero
+- ps_fig2_score.py - compares learning curves for aggregate score vs average score (rather than attempt number vs average score)
+
+ps_fig3.py - Make Figure 3 from the Psych Science paper. 
+- ps_fig3obs.py - extract observsed data (required for ps_fig3.py)
+- ps_fig3boot.py - bootstrap confidence intervals (required for ps_fig3.py)
+
+ps_fig4.py - Make Figure 4 from the Psych Science paper
+
+sup_attempts_vs_avscore - supplementary analysis, show attempt number vs average score
+
+sup_make_eeheatmap.py - supplementary graph, performs analysis of the explore exploit result (reported in the paper, page 5)
+- sup_ee_observed.py - the observed data
+- sup_ee_boot.py - CIs on the correlation
+
+sup_machinechurn.py - shows that for players with a high number of attempts the lerning curve regularity doesn't hold
+
+sup_resters_vs_goers.py - graph for resters vs goers result (reported in the paper, page 4, column 2)
+
+See \Figures for graphs produced by this lot

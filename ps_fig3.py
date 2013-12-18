@@ -51,7 +51,6 @@ diffs=np.concatenate([expt[0:50]-obsv[0:50],obsv[50:100]-expt[50:100]])
 
 print "mean difference in difference from zero (+ve means more spacing among higher scorers, less among low)= %6.2f" % mean(diffs)
 print 't-statistic = %6.3f pvalue = %6.4f' %  scipy.stats.ttest_1samp(diffs,0)
-
 print "PLOTTING"
 
 # plot -------------------------------------------
@@ -83,7 +82,7 @@ savefig('StaffordFig3.png', dpi=None, facecolor='w', edgecolor='w',
 
 generatepaperfigs=1
 if generatepaperfigs:
-    savefig('../psychscience/StaffordFig3.png', dpi=300, facecolor='w', edgecolor='w',
+    savefig('../psychscience/StaffordFig3.pdf', dpi=300, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=False, bbox_inches=None, pad_inches=0.1)       
 
