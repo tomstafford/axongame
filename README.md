@@ -28,14 +28,14 @@ Files in this Repository
 
 The following are all analysis files, written in Python, for generating the results reported in the paper and reported in the response to reviewers.
 
-* `ps_fig2.py` - Make Figure 2 from the Psych Science paper. Control analyses follow.
+* `ps_fig2.py` - make Figure 2 from the Psych Science paper. Control analyses follow.
 * `ps_fig2_equate.py` - equates players on first one/two scores. Also allows you to calculate maximum score on Nth play rather than on any (unspecified) play
 * `ps_fig2_rebaseline.py` - normalises plots to an initial score of zero
 * `ps_fig2_score.py` - compares learning curves for aggregate score vs average score (rather than attempt number vs average score)
-* `ps_fig3.py` - Make Figure 3 from the Psych Science paper. 
+* `ps_fig3.py` - make Figure 3 from the Psych Science paper. 
 * `ps_fig3obs.py` - extract observsed data (required for ps_fig3.py)
 * `ps_fig3boot.py` - bootstrap confidence intervals (required for ps_fig3.py)
-* `ps_fig4.py` - Make Figure 4 from the Psych Science paper
+* `ps_fig4.py` - make Figure 4 from the Psych Science paper
 * `sup_attempts_vs_avscore.py` - supplementary analysis, show attempt number vs average score
 * `sup_make_eeheatmap.py` - supplementary graph, performs analysis of the explore exploit result (reported in the paper, page 5)
 * `sup_ee_observed.py` - the observed data
