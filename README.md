@@ -7,7 +7,7 @@ In the present study, we analyzed data from a very large sample (N= 854,064) of 
 
 http://www.tomstafford.staff.shef.ac.uk/
 
-http://mikedewar.org/
+https://github.com/mikedewar
 
 FILES IN THIS REPOSITORY https://github.com/tomstafford/axongame 
 
