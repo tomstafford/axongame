@@ -7,7 +7,7 @@ This code accompanies our paper
 
 >Stafford, T. & Dewar, M. "Tracing the Trajectory of Skill Learning With a Very Large Sample of Online Game Players" 
 
-which is in press at [Psychological Science](http://pss.sagepub.com/) (expected January 2014). Previously this work was presented at the Cognitive Science Society conference in Berlin in August 2013 under the title "Testing theories of skill learning using a very large sample of online game players"
+which is in press at [Psychological Science](http://pss.sagepub.com/) (expected January 2014). Previously this work was presented at the Cognitive Science Society conference in Berlin in August 2013 under the title "Testing theories of skill learning using a very large sample of online game players".
 
 Abstract
 --------
